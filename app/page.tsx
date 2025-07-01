@@ -470,7 +470,7 @@ export default function RetroMailClient() {
       data,
     }
 
-    setPopups((prev) => [...prev, newPopup])
+    setPopups((prev) => ([newPopup])
     setActivePopupTypes((prev) => new Set([...prev, type]))
     trackPopup(type, "open")
   }
@@ -810,7 +810,7 @@ export default function RetroMailClient() {
                   달성한 마일스톤:{" "}
                   {Array.from(triggeredMilestones)
                     .sort((a, b) => a - b)
-                    .join(", ")}
+                    .join(", ") || 0}
                   개
                 </div>
                 <button
