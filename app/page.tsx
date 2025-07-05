@@ -77,6 +77,8 @@ export default function RetroMailClient() {
   const confettiRef = useRef<number>(0)
   const [activePopupTypes, setActivePopupTypes] = useState<Set<string>>(new Set())
   const [triggeredMilestones, setTriggeredMilestones] = useState<Set<number>>(new Set())
+  const [isClicking, setIsClicking] = useState(false)
+  const [popupCreationTimers, setPopupCreationTimers] = useState<Map<string, NodeJS.Timeout>>(new Map())
 
   const encouragementMessages = [
     "정말 잘하고 있어요! 💪",
@@ -367,6 +369,8 @@ export default function RetroMailClient() {
     return () => {
       clearInterval(blinkInterval)
       subscription.unsubscribe()
+      // 팝업 생성 타이머들 정리
+      popupCreationTimers.forEach((timer) => clearTimeout(timer))
     }
   }, [])
 
@@ -461,18 +465,43 @@ export default function RetroMailClient() {
       return
     }
 
-    const newPopup: PopupWindow = {
-      id: Date.now(),
-      type,
-      x: Math.random() * (window.innerWidth - 300),
-      y: Math.random() * (window.innerHeight - 200),
-      isVisible: true,
-      data,
+    // 이미 해당 타입의 팝업 생성 타이머가 있으면 취소하고 새로 설정
+    const existingTimer = popupCreationTimers.get(type)
+    if (existingTimer) {
+      clearTimeout(existingTimer)
     }
 
-    setPopups((prev) => ([newPopup])
-    setActivePopupTypes((prev) => new Set([...prev, type]))
-    trackPopup(type, "open")
+    // 300ms 디바운싱으로 팝업 생성
+    const timer = setTimeout(() => {
+      // 다시 한 번 확인 (디바운싱 기간 동안 상태가 변경될 수 있음)
+      if (activePopupTypes.has(type)) {
+        return
+      }
+
+      const newPopup: PopupWindow = {
+        id: Date.now(),
+        type,
+        x: Math.random() * (window.innerWidth - 300),
+        y: Math.random() * (window.innerHeight - 200),
+        isVisible: true,
+        data,
+      }
+
+      setPopups((prev) => [newPopup])
+      setActivePopupTypes((prev) => new Set([...prev, type]))
+      trackPopup(type, "open")
+      console.log("Popup created:", type)
+
+      // 타이머 맵에서 제거
+      setPopupCreationTimers((prev) => {
+        const newMap = new Map(prev)
+        newMap.delete(type)
+        return newMap
+      })
+    }, 300)
+
+    // 타이머 맵에 추가
+    setPopupCreationTimers((prev) => new Map([...prev, [type, timer]]))
   }
 
   const closePopup = (id: number) => {
@@ -491,7 +520,9 @@ export default function RetroMailClient() {
   }
 
   const handleHeartClick = async () => {
-    if (!sessionId) return
+    if (!sessionId || isClicking) return
+
+    setIsClicking(true)
 
     try {
       // 서버에서 하트 카운트 증가
@@ -552,6 +583,9 @@ export default function RetroMailClient() {
 
       // 특별 이벤트 트리거
       triggerSpecialEvent(newHeartCount)
+    } finally {
+      // 300ms 후에 다시 클릭 가능하도록 설정
+      setTimeout(() => setIsClicking(false), 300)
     }
   }
 
@@ -1070,7 +1104,11 @@ export default function RetroMailClient() {
                   {/* Main Message */}
                   <div className="text-center mb-4 pt-4">
                     <div
-                      className={`text-4xl font-black mb-2 cursor-pointer hover:text-red-800 select-none pixel-text transform hover:scale-110 transition-transform ${heartLevel >= 7 ? "text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-600 to-yellow-600 animate-pulse" : heartLevel >= 5 ? "text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-purple-600" : "text-red-600"}`}
+                      className={`text-4xl font-black mb-2 select-none pixel-text transform transition-all duration-200 ${
+                        isClicking 
+                          ? "scale-95 opacity-70 cursor-wait" 
+                          : "cursor-pointer hover:text-red-800 hover:scale-110"
+                      } ${heartLevel >= 7 ? "text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-600 to-yellow-600 animate-pulse" : heartLevel >= 5 ? "text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-purple-600" : "text-red-600"}`}
                       onClick={handleHeartClick}
                       style={{
                         textShadow:
@@ -1116,7 +1154,9 @@ export default function RetroMailClient() {
                         레벨 {heartLevel}: {getHeartLevelTitle(heartLevel)}
                       </div>
                     </div>
-                    <div className="text-xs text-gray-600 mt-1">위의 "화이팅!" 클릭!</div>
+                    <div className="text-xs text-gray-600 mt-1">
+                      {isClicking ? "⏳ 처리 중..." : "위의 \"화이팅!\" 클릭!"}
+                    </div>
                     <div className="text-xs text-blue-600 mt-1">💾 자동 저장됩니다</div>
                     {heartCount >= 5 && (
                       <div
