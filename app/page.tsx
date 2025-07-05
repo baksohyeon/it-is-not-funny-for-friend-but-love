@@ -67,7 +67,7 @@ export default function RetroMailClient() {
   const [blinkingText, setBlinkingText] = useState(true)
   const [loadingProgress, setLoadingProgress] = useState(0)
   const [showLoading, setShowLoading] = useState(false)
-  const [backgroundEffect, setBackgroundEffect] = useState<"none" | "rainbow" | "stars" | "hearts" | "fireworks">(
+  const [backgroundEffect, setBackgroundEffect] = useState<"none" | "rainbow" | "stars" | "hearts" | "fireworks" | "snow" | "sakura" | "lightning" | "space" | "matrix" | "laser" | "glitch" | "wave" | "explosion">(
     "none",
   )
   const [screenShake, setScreenShake] = useState(false)
@@ -106,15 +106,25 @@ export default function RetroMailClient() {
 
   // 하트 레벨 계산
   const calculateHeartLevel = (hearts: number) => {
-    if (hearts >= 100) return 10
-    if (hearts >= 75) return 9
-    if (hearts >= 50) return 8
-    if (hearts >= 30) return 7
-    if (hearts >= 20) return 6
-    if (hearts >= 15) return 5
-    if (hearts >= 10) return 4
-    if (hearts >= 7) return 3
-    if (hearts >= 5) return 2
+    if (hearts >= 1000) return 20
+    if (hearts >= 777) return 19
+    if (hearts >= 500) return 18
+    if (hearts >= 300) return 17
+    if (hearts >= 250) return 16
+    if (hearts >= 200) return 15
+    if (hearts >= 150) return 14
+    if (hearts >= 125) return 13
+    if (hearts >= 100) return 12
+    if (hearts >= 75) return 11
+    if (hearts >= 50) return 10
+    if (hearts >= 30) return 9
+    if (hearts >= 20) return 8
+    if (hearts >= 15) return 7
+    if (hearts >= 10) return 6
+    if (hearts >= 7) return 5
+    if (hearts >= 5) return 4
+    if (hearts >= 3) return 3
+    if (hearts >= 2) return 2
     return 1
   }
 
@@ -199,14 +209,109 @@ export default function RetroMailClient() {
       trackSpecialEffect("fireworks_background", level)
     }
 
+    if (hearts === 125 && !triggeredMilestones.has(125)) {
+      setTriggeredMilestones((prev) => new Set([...prev, 125]))
+      createPopup("special", { title: "겨울 왕국!", message: "125개 달성! 눈이 내려요!", icon: "❄️⛄" })
+      setBackgroundEffect("snow")
+      createFloatingHearts(30)
+      setTimeout(() => setBackgroundEffect("none"), 12000)
+      trackMilestone(125, level)
+      trackSpecialEffect("snow_background", level)
+    }
+
+    if (hearts === 150 && !triggeredMilestones.has(150)) {
+      setTriggeredMilestones((prev) => new Set([...prev, 150]))
+      createPopup("special", { title: "벚꽃 축제!", message: "150개 달성! 벚꽃이 흩날려요!", icon: "🌸🌺" })
+      setBackgroundEffect("sakura")
+      createFloatingHearts(40)
+      setTimeout(() => setBackgroundEffect("none"), 15000)
+      trackMilestone(150, level)
+      trackSpecialEffect("sakura_background", level)
+    }
+
+    if (hearts === 200 && !triggeredMilestones.has(200)) {
+      setTriggeredMilestones((prev) => new Set([...prev, 200]))
+      createPopup("special", { title: "번개 파워!", message: "200개 달성! 번개가 치네요!", icon: "⚡🌩️" })
+      setBackgroundEffect("lightning")
+      triggerScreenShake()
+      createFloatingHearts(60)
+      createConfetti(40)
+      setTimeout(() => setBackgroundEffect("none"), 8000)
+      trackMilestone(200, level)
+      trackSpecialEffect("lightning_background", level)
+    }
+
+    if (hearts === 250 && !triggeredMilestones.has(250)) {
+      setTriggeredMilestones((prev) => new Set([...prev, 250]))
+      createPopup("special", { title: "우주 여행!", message: "250개 달성! 우주로 떠나요!", icon: "🚀🌌" })
+      setBackgroundEffect("space")
+      createFloatingHearts(70)
+      setTimeout(() => setBackgroundEffect("none"), 20000)
+      trackMilestone(250, level)
+      trackSpecialEffect("space_background", level)
+    }
+
+    if (hearts === 300 && !triggeredMilestones.has(300)) {
+      setTriggeredMilestones((prev) => new Set([...prev, 300]))
+      createPopup("special", { title: "매트릭스!", message: "300개 달성! 디지털 세계로!", icon: "🔢💻" })
+      setBackgroundEffect("matrix")
+      createFloatingHearts(80)
+      createConfetti(60)
+      setTimeout(() => setBackgroundEffect("none"), 18000)
+      trackMilestone(300, level)
+      trackSpecialEffect("matrix_background", level)
+    }
+
+    if (hearts === 500 && !triggeredMilestones.has(500)) {
+      setTriggeredMilestones((prev) => new Set([...prev, 500]))
+      createPopup("milestone", { title: "레이저 쇼!", message: "500개 달성! 레이저 쇼가 시작돼요!", icon: "💎🔥" })
+      setBackgroundEffect("laser")
+      triggerScreenShake()
+      createFloatingHearts(100)
+      createConfetti(80)
+      setTimeout(() => setBackgroundEffect("none"), 25000)
+      trackMilestone(500, level)
+      trackSpecialEffect("laser_background", level)
+    }
+
+    if (hearts === 777 && !triggeredMilestones.has(777)) {
+      setTriggeredMilestones((prev) => new Set([...prev, 777]))
+      createPopup("special", { title: "럭키 777!", message: "777개 달성! 행운의 숫자!", icon: "🎰🍀" })
+      setBackgroundEffect("glitch")
+      setTimeout(() => setBackgroundEffect("explosion"), 5000)
+      setTimeout(() => setBackgroundEffect("rainbow"), 10000)
+      setTimeout(() => setBackgroundEffect("none"), 30000)
+      triggerScreenShake()
+      createFloatingHearts(150)
+      createConfetti(120)
+      trackMilestone(777, level)
+      trackSpecialEffect("lucky_777_combo", level)
+    }
+
+    if (hearts === 1000 && !triggeredMilestones.has(1000)) {
+      setTriggeredMilestones((prev) => new Set([...prev, 1000]))
+      createPopup("milestone", { title: "전설의 1000!", message: "1000개 달성! 응원의 신이 되었어요!", icon: "🎊🎉👑🏆" })
+      setBackgroundEffect("explosion")
+      setTimeout(() => setBackgroundEffect("rainbow"), 3000)
+      setTimeout(() => setBackgroundEffect("fireworks"), 6000)
+      setTimeout(() => setBackgroundEffect("stars"), 9000)
+      setTimeout(() => setBackgroundEffect("hearts"), 12000)
+      setTimeout(() => setBackgroundEffect("none"), 40000)
+      triggerScreenShake()
+      createFloatingHearts(200)
+      createConfetti(200)
+      trackMilestone(1000, level)
+      trackSpecialEffect("legendary_1000_combo", level)
+    }
+
     // 매 10개마다 작은 축하 (마일스톤이 아닌 경우에만)
-    if (hearts > 10 && hearts % 10 === 0 && ![15, 20, 30, 50, 75, 100].includes(hearts)) {
+    if (hearts > 10 && hearts % 10 === 0 && ![15, 20, 30, 50, 75, 100, 125, 150, 200, 250, 300, 500, 777, 1000].includes(hearts)) {
       createFloatingHearts(5)
       createConfetti(10)
     }
 
     // 매 25개마다 특별 효과 (마일스톤이 아닌 경우에만)
-    if (hearts > 25 && hearts % 25 === 0 && ![30, 50, 75, 100].includes(hearts)) {
+    if (hearts > 25 && hearts % 25 === 0 && ![30, 50, 75, 100, 125, 150, 200, 250, 300, 500, 777, 1000].includes(hearts)) {
       triggerScreenShake()
       setBackgroundEffect("stars")
       setTimeout(() => setBackgroundEffect("none"), 5000)
@@ -274,7 +379,7 @@ export default function RetroMailClient() {
 
         // 이미 달성한 마일스톤들을 triggeredMilestones에 추가
         const currentHearts = localData.heartCount
-        const achievedMilestones = [5, 10, 15, 20, 30, 50, 75, 100].filter((milestone) => currentHearts >= milestone)
+        const achievedMilestones = [5, 10, 15, 20, 30, 50, 75, 100, 125, 150, 200, 250, 300, 500, 777, 1000].filter((milestone) => currentHearts >= milestone)
         setTriggeredMilestones(new Set(achievedMilestones))
 
         // 서버 데이터 로드 시도
@@ -288,7 +393,7 @@ export default function RetroMailClient() {
           setHeartLevel(calculateHeartLevel(syncedData.heartCount))
 
           // 동기화된 데이터로 마일스톤 업데이트
-          const syncedAchievedMilestones = [5, 10, 15, 20, 30, 50, 75, 100].filter(
+          const syncedAchievedMilestones = [5, 10, 15, 20, 30, 50, 75, 100, 125, 150, 200, 250, 300, 500, 777, 1000].filter(
             (milestone) => syncedData.heartCount >= milestone,
           )
           setTriggeredMilestones(new Set(syncedAchievedMilestones))
@@ -303,7 +408,7 @@ export default function RetroMailClient() {
 
         // 에러 시에도 마일스톤 설정
         const currentHearts = localData.heartCount
-        const achievedMilestones = [5, 10, 15, 20, 30, 50, 75, 100].filter((milestone) => currentHearts >= milestone)
+        const achievedMilestones = [5, 10, 15, 20, 30, 50, 75, 100, 125, 150, 200, 250, 300, 500, 777, 1000].filter((milestone) => currentHearts >= milestone)
         setTriggeredMilestones(new Set(achievedMilestones))
       } finally {
         setIsLoadingSession(false)
@@ -437,7 +542,7 @@ export default function RetroMailClient() {
   // 마우스 트레일 효과
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      const trailEmoji = heartLevel >= 5 ? "✨" : heartLevel >= 3 ? "💫" : "✨"
+      const trailEmoji = heartLevel >= 20 ? "🌟" : heartLevel >= 15 ? "👑" : heartLevel >= 10 ? "💎" : heartLevel >= 5 ? "✨" : heartLevel >= 3 ? "💫" : "✨"
       const newTrail: MouseTrail = {
         id: mouseTrailRef.current++,
         x: e.clientX,
@@ -604,15 +709,25 @@ export default function RetroMailClient() {
   const getHeartLevelTitle = (level: number) => {
     const titles = [
       "새싹 응원단", // 1
-      "열정 응원단", // 2
-      "파워 응원단", // 3
-      "슈퍼 응원단", // 4
-      "울트라 응원단", // 5
-      "마스터 응원단", // 6
-      "그랜드 응원단", // 7
-      "레전드 응원단", // 8
-      "미라클 응원단", // 9
-      "갓 응원단", // 10
+      "초보 응원단", // 2
+      "열정 응원단", // 3
+      "파워 응원단", // 4
+      "슈퍼 응원단", // 5
+      "울트라 응원단", // 6
+      "마스터 응원단", // 7
+      "그랜드 응원단", // 8
+      "레전드 응원단", // 9
+      "미라클 응원단", // 10
+      "갓 응원단", // 11
+      "디바인 응원단", // 12
+      "엔젤 응원단", // 13
+      "세라핌 응원단", // 14
+      "아르카 응원단", // 15
+      "타이탄 응원단", // 16
+      "코스믹 응원단", // 17
+      "갤럭시 응원단", // 18
+      "유니버스 응원단", // 19
+      "임모탈 응원단", // 20
     ]
     return titles[level - 1] || "응원단"
   }
@@ -694,6 +809,160 @@ export default function RetroMailClient() {
         </div>
       )}
 
+      {backgroundEffect === "snow" && (
+        <div className="fixed inset-0 pointer-events-none z-10">
+          {[...Array(100)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute text-white animate-bounce"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 4}s`,
+                animationDuration: `${2 + Math.random() * 3}s`,
+              }}
+            >
+              {Math.random() > 0.5 ? "❄️" : "⛄"}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {backgroundEffect === "sakura" && (
+        <div className="fixed inset-0 pointer-events-none z-10">
+          {[...Array(60)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute text-pink-400 animate-pulse"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 5}s`,
+                transform: `rotate(${Math.random() * 360}deg)`,
+              }}
+            >
+              {Math.random() > 0.5 ? "🌸" : "🌺"}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {backgroundEffect === "lightning" && (
+        <div className="fixed inset-0 pointer-events-none z-10">
+          <div className="w-full h-full bg-yellow-200 opacity-30 animate-pulse"></div>
+          {[...Array(15)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute text-yellow-300 text-4xl animate-ping"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 2}s`,
+              }}
+            >
+              ⚡
+            </div>
+          ))}
+        </div>
+      )}
+
+      {backgroundEffect === "space" && (
+        <div className="fixed inset-0 pointer-events-none z-10">
+          <div className="w-full h-full bg-gradient-to-b from-purple-900 via-blue-900 to-black opacity-80"></div>
+          {[...Array(200)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute text-white animate-pulse"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 3}s`,
+                fontSize: `${Math.random() * 8 + 4}px`,
+              }}
+            >
+              {Math.random() > 0.8 ? "🌌" : Math.random() > 0.6 ? "✨" : "⭐"}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {backgroundEffect === "matrix" && (
+        <div className="fixed inset-0 pointer-events-none z-10">
+          <div className="w-full h-full bg-black opacity-80"></div>
+          {[...Array(80)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute text-green-400 font-mono text-xs animate-pulse"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 2}s`,
+              }}
+            >
+              {Math.random() > 0.5 ? "01" : "10"}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {backgroundEffect === "laser" && (
+        <div className="fixed inset-0 pointer-events-none z-10">
+          <div className="w-full h-full bg-gradient-to-r from-red-500 via-purple-500 to-blue-500 opacity-20 animate-pulse"></div>
+          {[...Array(30)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute animate-ping"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 2}s`,
+              }}
+            >
+              <div className="w-1 h-20 bg-gradient-to-b from-red-500 to-blue-500 opacity-70"></div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {backgroundEffect === "glitch" && (
+        <div className="fixed inset-0 pointer-events-none z-10">
+          <div className="w-full h-full bg-gradient-to-br from-red-500 via-purple-500 to-blue-500 opacity-30 animate-pulse"></div>
+          {[...Array(40)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute text-red-400 font-mono text-lg animate-bounce"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 1}s`,
+                transform: `skew(${Math.random() * 20 - 10}deg)`,
+              }}
+            >
+              {Math.random() > 0.5 ? "ERROR" : "GLITCH"}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {backgroundEffect === "explosion" && (
+        <div className="fixed inset-0 pointer-events-none z-10">
+          <div className="w-full h-full bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 opacity-40 animate-pulse"></div>
+          {[...Array(50)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute text-3xl animate-ping"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 2}s`,
+              }}
+            >
+              💥
+            </div>
+          ))}
+        </div>
+      )}
+
       {/* 떠다니는 하트들 */}
       {floatingHearts.map((heart) => (
         <div
@@ -735,8 +1004,8 @@ export default function RetroMailClient() {
             opacity: (index + 1) / mouseTrail.length,
           }}
         >
-          <span className={`text-lg animate-pulse ${heartLevel >= 5 ? "text-yellow-400" : "text-pink-500"}`}>
-            {heartLevel >= 7 ? "🌟" : heartLevel >= 5 ? "✨" : heartLevel >= 3 ? "💫" : "✨"}
+          <span className={`text-lg animate-pulse ${heartLevel >= 10 ? "text-yellow-400" : "text-pink-500"}`}>
+            {heartLevel >= 20 ? "🌟" : heartLevel >= 15 ? "👑" : heartLevel >= 10 ? "💎" : heartLevel >= 5 ? "✨" : heartLevel >= 3 ? "💫" : "✨"}
           </span>
         </div>
       ))}
@@ -845,7 +1114,7 @@ export default function RetroMailClient() {
                   {Array.from(triggeredMilestones)
                     .sort((a, b) => a - b)
                     .join(", ") || 0}
-                  개
+                  개 ({triggeredMilestones.size}/16)
                 </div>
                 <button
                   className="px-3 py-1 bg-gray-300 border-2 border-gray-400 hover:border-gray-600 text-xs"
@@ -895,7 +1164,7 @@ export default function RetroMailClient() {
       <div className={`transition-all duration-300 ${showScrollText ? "mt-8" : ""}`}>
         {/* Mail Client Window */}
         <div
-          className={`max-w-4xl mx-auto bg-gray-300 border-2 border-gray-400 shadow-lg ${heartLevel >= 7 ? "shadow-2xl shadow-purple-500/50" : ""}`}
+          className={`max-w-4xl mx-auto bg-gray-300 border-2 border-gray-400 shadow-lg ${heartLevel >= 15 ? "shadow-2xl shadow-purple-500/50" : ""}`}
         >
           {/* Title Bar */}
           <div
@@ -905,12 +1174,15 @@ export default function RetroMailClient() {
               <div
                 className={`w-4 h-4 border border-gray-600 flex items-center justify-center text-xs ${heartLevel >= 3 ? "bg-gradient-to-r from-yellow-400 to-orange-400" : "bg-yellow-400"}`}
               >
-                {heartLevel >= 7 ? "👑" : heartLevel >= 5 ? "⭐" : "📧"}
+                {heartLevel >= 15 ? "👑" : heartLevel >= 10 ? "💎" : heartLevel >= 5 ? "⭐" : "📧"}
               </div>
               <span className="font-bold">응원 메일 - [받은편지함] - {getHeartLevelTitle(heartLevel)}</span>
               {isMusicPlaying && <span className="text-xs animate-pulse">♪ ♫</span>}
               {isLoadingSession && <span className="text-xs animate-pulse">💾 로딩중...</span>}
-              {heartLevel >= 5 && <span className="text-xs animate-pulse">✨ 특별 모드 ✨</span>}
+                              {heartLevel >= 20 && <span className="text-xs animate-sparkle">🌟 임모탈 모드 🌟</span>}
+                {heartLevel >= 15 && heartLevel < 20 && <span className="text-xs animate-glitch">👑 레전드 모드 👑</span>}
+                {heartLevel >= 10 && heartLevel < 15 && <span className="text-xs animate-bounce">💎 다이아 모드 💎</span>}
+                {heartLevel >= 5 && heartLevel < 10 && <span className="text-xs animate-pulse">⭐ 특별 모드 ⭐</span>}
             </div>
             <div className="flex space-x-1">
               <button className="w-6 h-6 bg-gray-300 border border-gray-600 text-black text-xs hover:bg-gray-200">
@@ -939,9 +1211,24 @@ export default function RetroMailClient() {
                 🎵 음악({isMusicPlaying ? "ON" : "OFF"})
               </span>
               <span className="hover:bg-blue-600 hover:text-white px-2 py-1 cursor-pointer">도움말(H)</span>
-              {heartLevel >= 5 && (
-                <span className="hover:bg-purple-600 hover:text-white px-2 py-1 cursor-pointer text-purple-600 font-bold">
-                  ✨ 특별메뉴 ✨
+              {heartLevel >= 20 && (
+                <span className="hover:bg-yellow-600 hover:text-white px-2 py-1 cursor-pointer text-yellow-600 font-bold animate-sparkle">
+                  🌟 임모탈메뉴 🌟
+                </span>
+              )}
+              {heartLevel >= 15 && heartLevel < 20 && (
+                <span className="hover:bg-purple-600 hover:text-white px-2 py-1 cursor-pointer text-purple-600 font-bold animate-glitch">
+                  👑 레전드메뉴 👑
+                </span>
+              )}
+              {heartLevel >= 10 && heartLevel < 15 && (
+                <span className="hover:bg-blue-600 hover:text-white px-2 py-1 cursor-pointer text-blue-600 font-bold animate-bounce">
+                  💎 다이아메뉴 💎
+                </span>
+              )}
+              {heartLevel >= 5 && heartLevel < 10 && (
+                <span className="hover:bg-purple-600 hover:text-white px-2 py-1 cursor-pointer text-purple-600 font-bold animate-pulse">
+                  ⭐ 특별메뉴 ⭐
                 </span>
               )}
             </div>
@@ -972,15 +1259,57 @@ export default function RetroMailClient() {
               <span>📢</span>
               <span>공지 {showScrollText ? "끄기" : "켜기"}</span>
             </button>
-            {heartLevel >= 3 && (
+            {heartLevel >= 20 && (
               <button
-                className="px-3 py-1 bg-gradient-to-r from-purple-400 to-pink-400 text-white border-2 border-purple-600 hover:border-purple-800 text-xs flex items-center space-x-1"
+                className="px-3 py-1 bg-gradient-to-r from-yellow-400 to-orange-400 text-white border-2 border-yellow-600 hover:border-yellow-800 text-xs flex items-center space-x-1 animate-sparkle"
+                onClick={() => {
+                  createFloatingHearts(50)
+                  createConfetti(100)
+                  setBackgroundEffect("explosion")
+                  setTimeout(() => setBackgroundEffect("none"), 10000)
+                }}
+              >
+                <span>🌟</span>
+                <span>임모탈효과</span>
+              </button>
+            )}
+            {heartLevel >= 15 && heartLevel < 20 && (
+              <button
+                className="px-3 py-1 bg-gradient-to-r from-purple-400 to-pink-400 text-white border-2 border-purple-600 hover:border-purple-800 text-xs flex items-center space-x-1 animate-glitch"
+                onClick={() => {
+                  createFloatingHearts(30)
+                  createConfetti(50)
+                  setBackgroundEffect("glitch")
+                  setTimeout(() => setBackgroundEffect("none"), 8000)
+                }}
+              >
+                <span>👑</span>
+                <span>레전드효과</span>
+              </button>
+            )}
+            {heartLevel >= 10 && heartLevel < 15 && (
+              <button
+                className="px-3 py-1 bg-gradient-to-r from-blue-400 to-cyan-400 text-white border-2 border-blue-600 hover:border-blue-800 text-xs flex items-center space-x-1 animate-bounce"
+                onClick={() => {
+                  createFloatingHearts(20)
+                  createConfetti(30)
+                  setBackgroundEffect("laser")
+                  setTimeout(() => setBackgroundEffect("none"), 6000)
+                }}
+              >
+                <span>💎</span>
+                <span>다이아효과</span>
+              </button>
+            )}
+            {heartLevel >= 3 && heartLevel < 10 && (
+              <button
+                className="px-3 py-1 bg-gradient-to-r from-purple-400 to-pink-400 text-white border-2 border-purple-600 hover:border-purple-800 text-xs flex items-center space-x-1 animate-pulse"
                 onClick={() => {
                   createFloatingHearts(5)
                   createConfetti(10)
                 }}
               >
-                <span>✨</span>
+                <span>⭐</span>
                 <span>특별효과</span>
               </button>
             )}
@@ -1108,7 +1437,7 @@ export default function RetroMailClient() {
                         isClicking 
                           ? "scale-95 opacity-70 cursor-wait" 
                           : "cursor-pointer hover:text-red-800 hover:scale-110"
-                      } ${heartLevel >= 7 ? "text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-600 to-yellow-600 animate-pulse" : heartLevel >= 5 ? "text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-purple-600" : "text-red-600"}`}
+                      } ${heartLevel >= 20 ? "text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-orange-500 via-red-500 via-purple-500 to-blue-500 animate-sparkle" : heartLevel >= 15 ? "text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-600 to-yellow-600 animate-glitch" : heartLevel >= 10 ? "text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 animate-bounce" : heartLevel >= 5 ? "text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-purple-600" : "text-red-600"}`}
                       onClick={handleHeartClick}
                       style={{
                         textShadow:
@@ -1118,7 +1447,7 @@ export default function RetroMailClient() {
                         fontFamily: "monospace",
                       }}
                     >
-                      {heartLevel >= 7 ? "👑 화이팅! 👑" : heartLevel >= 5 ? "⭐ 화이팅! ⭐" : "화이팅!"}
+                      {heartLevel >= 20 ? "🌟 화이팅! 🌟" : heartLevel >= 15 ? "👑 화이팅! 👑" : heartLevel >= 10 ? "💎 화이팅! 💎" : heartLevel >= 5 ? "⭐ 화이팅! ⭐" : "화이팅!"}
                     </div>
                     <div
                       className={`text-sm font-bold mb-2 ${heartLevel >= 5 ? "text-purple-800" : "text-purple-800"}`}
@@ -1235,11 +1564,14 @@ export default function RetroMailClient() {
                   className={`p-2 text-center text-xs font-mono border ${heartLevel >= 7 ? "bg-gradient-to-r from-purple-900 via-pink-900 to-yellow-900 text-yellow-200 border-yellow-600" : heartLevel >= 5 ? "bg-gradient-to-r from-purple-900 to-pink-900 text-pink-200 border-pink-600" : "bg-purple-900 text-purple-200 border-purple-600"}`}
                 >
                   <div className="text-purple-300 mb-1">
-                    {heartLevel >= 7 ? "👑 LEGEND" : heartLevel >= 5 ? "⭐ SPECIAL" : "💜 LEVEL"}
+                    {heartLevel >= 20 ? "🌟 IMMORTAL" : heartLevel >= 15 ? "👑 LEGEND" : heartLevel >= 10 ? "💎 DIAMOND" : heartLevel >= 5 ? "⭐ SPECIAL" : "💜 LEVEL"}
                   </div>
                   <div className="text-lg font-bold">Lv.{heartLevel}</div>
                   <div className="text-xs mt-1">{getHeartLevelTitle(heartLevel)}</div>
-                  {heartLevel >= 5 && <div className="text-xs mt-1 animate-pulse">✨ 특별 모드 ✨</div>}
+                  {heartLevel >= 20 && <div className="text-xs mt-1 animate-sparkle">🌟 임모탈 모드 🌟</div>}
+                  {heartLevel >= 15 && heartLevel < 20 && <div className="text-xs mt-1 animate-glitch">👑 레전드 모드 👑</div>}
+                  {heartLevel >= 10 && heartLevel < 15 && <div className="text-xs mt-1 animate-bounce">💎 다이아 모드 💎</div>}
+                  {heartLevel >= 5 && heartLevel < 10 && <div className="text-xs mt-1 animate-pulse">⭐ 특별 모드 ⭐</div>}
                 </div>
               </div>
 
@@ -1247,7 +1579,7 @@ export default function RetroMailClient() {
               <div className="p-2 border-t border-gray-400">
                 <div className="bg-green-900 text-green-200 p-2 text-center text-xs font-mono border border-green-600">
                   <div className="text-green-300 mb-1">🎯 MILESTONE</div>
-                  <div className="text-sm font-bold">{triggeredMilestones.size}/8</div>
+                  <div className="text-sm font-bold">{triggeredMilestones.size}/16</div>
                   <div className="text-xs mt-1">달성 완료</div>
                   <div className="text-xs mt-1">
                     {Array.from(triggeredMilestones)
@@ -1305,9 +1637,24 @@ export default function RetroMailClient() {
                   <div className="bg-gradient-to-r from-blue-400 to-green-500 text-white text-center py-1 text-xs cursor-pointer hover:from-blue-500 hover:to-green-600 transition-all hover:scale-105">
                     🌟 힐링존
                   </div>
-                  {heartLevel >= 5 && (
-                    <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-center py-1 text-xs cursor-pointer hover:from-yellow-500 hover:to-orange-600 transition-all hover:scale-105">
-                      ✨ 특별존
+                  {heartLevel >= 20 && (
+                    <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-center py-1 text-xs cursor-pointer hover:from-yellow-500 hover:to-orange-600 transition-all hover:scale-105 animate-sparkle">
+                      🌟 임모탈존
+                    </div>
+                  )}
+                  {heartLevel >= 15 && heartLevel < 20 && (
+                    <div className="bg-gradient-to-r from-purple-400 to-pink-500 text-white text-center py-1 text-xs cursor-pointer hover:from-purple-500 hover:to-pink-600 transition-all hover:scale-105 animate-glitch">
+                      👑 레전드존
+                    </div>
+                  )}
+                  {heartLevel >= 10 && heartLevel < 15 && (
+                    <div className="bg-gradient-to-r from-blue-400 to-cyan-500 text-white text-center py-1 text-xs cursor-pointer hover:from-blue-500 hover:to-cyan-600 transition-all hover:scale-105 animate-bounce">
+                      💎 다이아존
+                    </div>
+                  )}
+                  {heartLevel >= 5 && heartLevel < 10 && (
+                    <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-center py-1 text-xs cursor-pointer hover:from-yellow-500 hover:to-orange-600 transition-all hover:scale-105 animate-pulse">
+                      ⭐ 특별존
                     </div>
                   )}
                 </div>
@@ -1325,10 +1672,28 @@ export default function RetroMailClient() {
               <span className={blinkingText ? "text-red-600" : heartLevel >= 5 ? "text-purple-600" : "text-blue-600"}>
                 {isMusicPlaying ? "♪ 음악재생중" : "🔇 음악꺼짐"}
               </span>
-              {heartLevel >= 5 && (
+              {heartLevel >= 20 && (
                 <>
                   <span>|</span>
-                  <span className="text-purple-600 font-bold animate-pulse">✨ 특별모드 활성 ✨</span>
+                  <span className="text-yellow-600 font-bold animate-sparkle">🌟 임모탈모드 활성 🌟</span>
+                </>
+              )}
+              {heartLevel >= 15 && heartLevel < 20 && (
+                <>
+                  <span>|</span>
+                  <span className="text-purple-600 font-bold animate-glitch">👑 레전드모드 활성 👑</span>
+                </>
+              )}
+              {heartLevel >= 10 && heartLevel < 15 && (
+                <>
+                  <span>|</span>
+                  <span className="text-blue-600 font-bold animate-bounce">💎 다이아모드 활성 💎</span>
+                </>
+              )}
+              {heartLevel >= 5 && heartLevel < 10 && (
+                <>
+                  <span>|</span>
+                  <span className="text-purple-600 font-bold animate-pulse">⭐ 특별모드 활성 ⭐</span>
                 </>
               )}
             </div>
@@ -1337,7 +1702,7 @@ export default function RetroMailClient() {
               <span>|</span>
               <span>레벨: {heartLevel}</span>
               <span>|</span>
-              <span>마일스톤: {triggeredMilestones.size}/8</span>
+              <span>마일스톤: {triggeredMilestones.size}/16</span>
               <span>|</span>
               <span>방문자: {visitorCount}명</span>
               <span>|</span>
@@ -1364,6 +1729,30 @@ export default function RetroMailClient() {
         }
         .animate-shake {
           animation: shake 1s ease-in-out;
+        }
+        @keyframes glitch {
+          0%, 100% { transform: translate(0); }
+          10% { transform: translate(-2px, 2px); }
+          20% { transform: translate(2px, -2px); }
+          30% { transform: translate(-2px, -2px); }
+          40% { transform: translate(2px, 2px); }
+          50% { transform: translate(-2px, 2px); }
+          60% { transform: translate(2px, -2px); }
+          70% { transform: translate(-2px, -2px); }
+          80% { transform: translate(2px, 2px); }
+          90% { transform: translate(-2px, 2px); }
+        }
+        .animate-glitch {
+          animation: glitch 0.5s ease-in-out infinite;
+        }
+        @keyframes sparkle {
+          0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+          25% { transform: scale(1.2) rotate(90deg); opacity: 0.8; }
+          50% { transform: scale(0.8) rotate(180deg); opacity: 0.6; }
+          75% { transform: scale(1.1) rotate(270deg); opacity: 0.9; }
+        }
+        .animate-sparkle {
+          animation: sparkle 2s ease-in-out infinite;
         }
       `}</style>
     </div>
